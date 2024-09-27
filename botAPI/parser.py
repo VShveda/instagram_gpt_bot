@@ -1,6 +1,5 @@
 import time
 
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import requests
@@ -38,3 +37,11 @@ class InstagramParser:
         img_url = profile_img.get_attribute("src")
 
         return bio, img_url
+
+    @staticmethod
+    def download_img(url, save_path="data/profile_img.jpg") -> str:
+        response = requests.get(url)
+        with open(save_path, "wb") as file:
+            file.write(response.content)
+
+        return save_path
