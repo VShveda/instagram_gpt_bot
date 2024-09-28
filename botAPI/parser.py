@@ -11,10 +11,22 @@ class InstagramParser:
         self.username = username
         self.password = password
 
+    def accept_cookies(self) -> None:
+        try:
+            accept_button = self.driver.find_element(
+                By.CSS_SELECTOR, "button._a9--._ap36._a9_0"
+            )
+            accept_button.click()
+            time.sleep(2)
+        except Exception as e:
+            print("Error while accepting cookies:", e)
+
     def login(self) -> None:
         self.driver.get("https://www.instagram.com/accounts/login/")
-        time.sleep(4)
+        time.sleep(2)
 
+        self.accept_cookies()
+        time.sleep(2)
         username_input = self.driver.find_element(By.NAME, "username")
         username_input.send_keys(self.username)
 
@@ -27,11 +39,22 @@ class InstagramParser:
     def get_profile_info(self, profile_url) -> tuple[dict, str]:
         self.driver.get(profile_url)
         time.sleep(3)
+        try:
+            full_name = self.driver.find_element(
+                By.CSS_SELECTOR, "div.x9f619 > span.x1lliihq"
+            )
+            full_name = full_name.text
+        except Exception as e:
+            full_name = None
+        try:
+            description = self.driver.find_element(
+                By.CSS_SELECTOR, "span._ap3a._aaco._aacu._aacx._aad7._aade"
+            )
+            description = description.text
+        except Exception as e:
+            description = None
 
-        full_name = self.driver.find_element(By.CSS_SELECTOR, "div.x9f619 > span.x1lliihq")
-        description = self.driver.find_element(By.CSS_SELECTOR, "span._ap3a._aaco._aacu._aacx._aad7._aade")
-
-        bio = {"full_name": full_name.text, "description": description.text}
+        bio = {"full_name": full_name, "description": description}
 
         profile_img = self.driver.find_element(By.CSS_SELECTOR, "a[role='link'] img")
         img_url = profile_img.get_attribute("src")
