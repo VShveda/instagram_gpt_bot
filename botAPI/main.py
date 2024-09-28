@@ -1,16 +1,40 @@
-# This is a sample Python script.
+import os
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from dotenv import load_dotenv
+
+from botAPI.parser import InstagramParser
+from botAPI.data_analyzer import img_description
+from botAPI.message_generator import message
+
+load_dotenv()
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def main(profile_url) -> None:
+    username = os.getenv("INSTAGRAM_USERNAME")
+    password = os.getenv("INSTAGRAM_PASSWORD")
+    chrome_options = Options()
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()), options=chrome_options
+    )
+
+    parser = InstagramParser(driver, username, password)
+    parser.login()
+
+    bio, img_url = parser.get_profile_info(profile_url)
+    print(f"bio: {bio}, img_url: {img_url}")
+
+    img_desc = img_description(img_url)
+    print(message(bio, img_desc))
+    driver.quit()
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    target_profile_url = ""
+    main(target_profile_url)
