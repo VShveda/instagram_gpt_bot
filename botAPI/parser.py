@@ -1,5 +1,6 @@
 import time
 
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import requests
@@ -44,14 +45,14 @@ class InstagramParser:
                 By.CSS_SELECTOR, "div.x9f619 > span.x1lliihq"
             )
             full_name = full_name.text
-        except Exception as e:
+        except NoSuchElementException as e:
             full_name = None
         try:
             description = self.driver.find_element(
                 By.CSS_SELECTOR, "span._ap3a._aaco._aacu._aacx._aad7._aade"
             )
             description = description.text
-        except Exception as e:
+        except NoSuchElementException as e:
             description = None
 
         bio = {"full_name": full_name, "description": description}
