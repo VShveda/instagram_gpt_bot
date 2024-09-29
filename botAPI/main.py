@@ -13,7 +13,7 @@ from botAPI.message_generator import message
 load_dotenv()
 
 
-def main(profile_url) -> None:
+def main(profile_url: str) -> None:
     username = os.getenv("INSTAGRAM_USERNAME")
     password = os.getenv("INSTAGRAM_PASSWORD")
     chrome_options = Options()
@@ -21,7 +21,8 @@ def main(profile_url) -> None:
     chrome_options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()), options=chrome_options
+        service=Service(ChromeDriverManager().install()),
+        options=chrome_options
     )
 
     parser = InstagramParser(driver, username, password)

@@ -1,13 +1,14 @@
 import time
 
 from selenium.common import NoSuchElementException
+from selenium.webdriver.chrome import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import requests
 
 
 class InstagramParser:
-    def __init__(self, driver, username, password) -> None:
+    def __init__(self, driver: webdriver, username: str, password: str) -> None:
         self.driver = driver
         self.username = username
         self.password = password
@@ -37,7 +38,7 @@ class InstagramParser:
         password_input.send_keys(Keys.ENTER)
         time.sleep(5)
 
-    def get_profile_info(self, profile_url) -> tuple[dict, str]:
+    def get_profile_info(self, profile_url: str) -> tuple[dict, str]:
         self.driver.get(profile_url)
         time.sleep(3)
         try:
@@ -45,14 +46,14 @@ class InstagramParser:
                 By.CSS_SELECTOR, "div.x9f619 > span.x1lliihq"
             )
             full_name = full_name.text
-        except NoSuchElementException as e:
+        except NoSuchElementException:
             full_name = None
         try:
             description = self.driver.find_element(
                 By.CSS_SELECTOR, "span._ap3a._aaco._aacu._aacx._aad7._aade"
             )
             description = description.text
-        except NoSuchElementException as e:
+        except NoSuchElementException:
             description = None
 
         bio = {"full_name": full_name, "description": description}
@@ -63,7 +64,7 @@ class InstagramParser:
         return bio, img_url
 
     @staticmethod
-    def download_img(url, save_path="data/profile_img.jpg") -> str:
+    def download_img(url: str, save_path: str = "data/profile_img.jpg") -> str:
         response = requests.get(url)
         with open(save_path, "wb") as file:
             file.write(response.content)
