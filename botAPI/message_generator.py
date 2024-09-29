@@ -9,7 +9,7 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 gemini.configure(api_key=GEMINI_API_KEY)
 
 
-def message(bio: dict, objects_detected: str) -> str:
+def get_message(bio: dict, objects_detected: str) -> str:
 
     prompt = f"""
     Я збираюся написати перше дружнє повідомлення людині на основі її профілю в Instagram.

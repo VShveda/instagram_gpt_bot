@@ -24,5 +24,4 @@ def img_description(url: str) -> str:
     img = download_image(url)
     model = gemini.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content([prompt, img])
-    print(response.text)
     return response.text

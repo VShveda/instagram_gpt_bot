@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 from botAPI.parser import InstagramParser
 from botAPI.data_analyzer import img_description
-from botAPI.message_generator import message
+from botAPI.message_generator import get_message
 
 load_dotenv()
 
@@ -29,10 +29,9 @@ def main(profile_url: str) -> None:
     parser.login()
 
     bio, img_url = parser.get_profile_info(profile_url)
-    print(f"bio: {bio}, img_url: {img_url}")
 
     img_desc = img_description(img_url)
-    print(message(bio, img_desc))
+    print(get_message(bio, img_desc))
     driver.quit()
 
 
