@@ -20,8 +20,8 @@ class InstagramParser:
             )
             accept_button.click()
             time.sleep(2)
-        except NoSuchElementException as e:
-            print("Error while accepting cookies:", e)
+        except NoSuchElementException:
+            print("Cookies already accepted")
 
     def login(self) -> None:
         self.driver.get("https://www.instagram.com/accounts/login/")
@@ -62,11 +62,3 @@ class InstagramParser:
         img_url = profile_img.get_attribute("src")
 
         return bio, img_url
-
-    @staticmethod
-    def download_img(url: str, save_path: str = "data/profile_img.jpg") -> str:
-        response = requests.get(url)
-        with open(save_path, "wb") as file:
-            file.write(response.content)
-
-        return save_path
