@@ -12,7 +12,8 @@ gemini.configure(api_key=GEMINI_API_KEY)
 def message(bio, objects_detected):
 
     prompt = f"""
-    Я збираюся написати перше дружнє повідомлення людині на основі її профілю в Instagram. Ось що я знаю про людину: 
+    Я збираюся написати перше дружнє повідомлення людині на основі її профілю в Instagram.
+    Ось що я знаю про людину: 
     - Ім'я: {bio['full_name']}
     - Опис профілю: {bio['description']}
     - Виявлені об'єкти на фото: {objects_detected}

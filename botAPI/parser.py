@@ -19,15 +19,15 @@ class InstagramParser:
             )
             accept_button.click()
             time.sleep(2)
-        except Exception as e:
+        except NoSuchElementException as e:
             print("Error while accepting cookies:", e)
 
     def login(self) -> None:
         self.driver.get("https://www.instagram.com/accounts/login/")
-        time.sleep(2)
+        time.sleep(1)
 
         self.accept_cookies()
-        time.sleep(2)
+        time.sleep(1)
         username_input = self.driver.find_element(By.NAME, "username")
         username_input.send_keys(self.username)
 
